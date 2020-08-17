@@ -1,4 +1,4 @@
-let result = `/*
+const result = `/*
  * 面试官你好，我是孔义
  * 我将以动画的形式来介绍我自己
  * 只用文字介绍太单调了
@@ -19,15 +19,29 @@ html{
   border: 1px solid #ddd;
   padding: 16px;
 }
+
+/* 我需要一点代码高亮 */
+
+.token.selector {
+  color: #690;
+}
+.token.property {
+  color: #905;
+}
+.token.function {
+  color: dd4A68;
+}
+
 `;
 let n = 0;
-let id = setInterval(() => {
+const id = setInterval(() => {
   n += 1;
   code.innerHTML = result.substring(0, n);
   code.innerHTML = code.innerHTML.replace(
     "html",
     '<span style="color: red;">html</span>'
   );
+  code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
   styleTag.innerHTML = result.substring(0, n);
   console.log("一轮");
   if (n >= result.length) {
