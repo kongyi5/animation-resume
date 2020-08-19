@@ -118,41 +118,40 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"main.js":[function(require,module,exports) {
-var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid #ddd;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n/* \u52A0\u70B9 3D \u6548\u679C */\n#code{\n  transform: rotate(360deg);\n}\n/* \u4E0D\u73A9\u4E86\uFF0C\u6211\u5F00\u59CB\u6B63\u5F0F\u4ECB\u7ECD\u6211\u81EA\u5DF1\u5427\uFF01*/\n/* \u9996\u5148\u51C6\u5907\u4E00\u5F20\u767D\u7EB8 */\n";
-var result2 = "\n";
-var n = 0;
-var id = setInterval(function () {
-  n += 1;
-  code.innerHTML = result.substring(0, n);
-  code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
-  styleTag.innerHTML = result.substring(0, n);
-
-  if (n >= result.length) {
-    window.clearInterval(id);
-    fn2();
-    fn3(result);
-  }
-}, 10);
-
-function fn2() {
-  var paper = document.createElement("div");
-  paper.id = "paper";
-  document.body.appendChild(paper);
-}
-
-function fn3(preResult) {
-  var result = "\n#paper{\n  width: 100px; height: 100px;\n  background: red;\n}\n  ";
+// 把 code 写道 #code 和 style标签 里
+function writeCode(prefix, code, fn) {
+  var domCode = document.querySelector("#code");
   var n = 0;
   var id = setInterval(function () {
     n += 1;
-    code.innerHTML = preResult + result.substring(0, n);
-    code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
-    styleTag.innerHTML = result.substring(0, n);
+    domCode.innerHTML = Prism.highlight(prefix + code.substring(0, n), Prism.languages.css);
+    styleTag.innerHTML = prefix + code.substring(0, n);
+    domCode.scrollTop = domCode.scrollHeight;
 
-    if (n >= result.length) {
+    if (n >= code.length) {
       window.clearInterval(id);
+      fn && fn.call();
     }
-  }, 50);
+  }, 10);
+}
+
+var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid red;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n/* \u52A0\u70B9 3D \u6548\u679C */\n#code{\n  transform: rotate(360deg);\n}\n/* \u4E0D\u73A9\u4E86\uFF0C\u6211\u5F00\u59CB\u6B63\u5F0F\u4ECB\u7ECD\u6211\u81EA\u5DF1\u5427\uFF01*/\n/* \u9996\u5148\u51C6\u5907\u4E00\u5F20\u767D\u7EB8 */\n#code{\n  position: fixed;\n  left: 0;\n  width: 50%;\n  height: 100%;\n}\n#paper{\n  position: fixed;\n  background: black;\n  right: 0;\n  width: 50%;\n  height: 100%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 16px;\n}\n#paper > .content{\n  background: white;\n  width: 100%;\n  height: 100%;\n}\n";
+var result2 = "\n#paper{\n\n}\n";
+writeCode("", result, function () {
+  // writeCode call the function
+  createPaper(function () {
+    writeCode(result, result2);
+  });
+});
+
+function createPaper(fn) {
+  var paper = document.createElement("div");
+  var content = document.createElement("div");
+  paper.id = "paper";
+  content.className = "content";
+  document.body.appendChild(paper);
+  paper.appendChild(content);
+  fn.call();
 }
 },{}],"../../../AppData/Local/Yarn/Data/global/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -182,7 +181,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52170" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54301" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

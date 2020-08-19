@@ -1,3 +1,23 @@
+// 把 code 写道 #code 和 style标签 里
+function writeCode(prefix, code, fn) {
+  let domCode = document.querySelector("#code");
+  let n = 0;
+  const id = setInterval(() => {
+    n += 1;
+    domCode.innerHTML = Prism.highlight(
+      prefix + code.substring(0, n),
+      Prism.languages.css
+    );
+    styleTag.innerHTML = prefix + code.substring(0, n);
+    domCode.scrollTop = domCode.scrollHeight;
+
+    if (n >= code.length) {
+      window.clearInterval(id);
+      fn && fn.call();
+    }
+  }, 10);
+}
+
 const result = `/*
  * 面试官你好，我是孔义
  * 我将以动画的形式来介绍我自己
@@ -16,7 +36,7 @@ html{
   font-size: 16px;
 }
 #code{
-  border: 1px solid #ddd;
+  border: 1px solid red;
   padding: 16px;
 }
 
@@ -37,45 +57,50 @@ html{
 }
 /* 不玩了，我开始正式介绍我自己吧！*/
 /* 首先准备一张白纸 */
-`;
-
-const result2 = `
-`;
-let n = 0;
-const id = setInterval(() => {
-  n += 1;
-  code.innerHTML = result.substring(0, n);
-  code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
-  styleTag.innerHTML = result.substring(0, n);
-  if (n >= result.length) {
-    window.clearInterval(id);
-    fn2();
-    fn3(result);
-  }
-}, 10);
-
-function fn2() {
-  const paper = document.createElement("div");
-  paper.id = "paper";
-  document.body.appendChild(paper);
+#code{
+  position: fixed;
+  left: 0;
+  width: 50%;
+  height: 100%;
 }
-
-function fn3(preResult) {
-  var result = `
 #paper{
-  width: 100px; height: 100px;
-  background: red;
+  position: fixed;
+  background: black;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
 }
-  `;
-  let n = 0;
-  const id = setInterval(() => {
-    n += 1;
-    code.innerHTML = preResult + result.substring(0, n);
-    code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
-    styleTag.innerHTML = result.substring(0, n);
+#paper > .content{
+  background: white;
+  width: 100%;
+  height: 100%;
+}
+`;
+let result2 = `
+#paper{
 
-    if (n >= result.length) {
-      window.clearInterval(id);
-    }
-  }, 50);
+}
+`;
+writeCode("", result, () => {
+  // writeCode call the function
+  createPaper(() => {
+    writeCode(result, result2);
+  });
+});
+
+function createPaper(fn) {
+  const paper = document.createElement("div");
+  const content = document.createElement("div");
+
+  paper.id = "paper";
+  content.className = "content";
+
+  document.body.appendChild(paper);
+  paper.appendChild(content);
+
+  fn.call();
 }
