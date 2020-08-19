@@ -43,7 +43,6 @@ const id = setInterval(() => {
   );
   code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
   styleTag.innerHTML = result.substring(0, n);
-  console.log("一轮");
   if (n >= result.length) {
     window.clearInterval(id);
   }
