@@ -31,19 +31,51 @@ html{
 .token.function {
   color: dd4A68;
 }
+/* 加点 3D 效果 */
+#code{
+  transform: rotate(360deg);
+}
+/* 不玩了，我开始正式介绍我自己吧！*/
+/* 首先准备一张白纸 */
+`;
 
+const result2 = `
 `;
 let n = 0;
 const id = setInterval(() => {
   n += 1;
   code.innerHTML = result.substring(0, n);
-  code.innerHTML = code.innerHTML.replace(
-    "html",
-    '<span style="color: red;">html</span>'
-  );
   code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
   styleTag.innerHTML = result.substring(0, n);
   if (n >= result.length) {
     window.clearInterval(id);
+    fn2();
+    fn3(result);
   }
 }, 10);
+
+function fn2() {
+  const paper = document.createElement("div");
+  paper.id = "paper";
+  document.body.appendChild(paper);
+}
+
+function fn3(preResult) {
+  var result = `
+#paper{
+  width: 100px; height: 100px;
+  background: red;
+}
+  `;
+  let n = 0;
+  const id = setInterval(() => {
+    n += 1;
+    code.innerHTML = preResult + result.substring(0, n);
+    code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
+    styleTag.innerHTML = result.substring(0, n);
+
+    if (n >= result.length) {
+      window.clearInterval(id);
+    }
+  }, 50);
+}

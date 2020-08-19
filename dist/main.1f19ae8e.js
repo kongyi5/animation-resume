@@ -118,19 +118,42 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"main.js":[function(require,module,exports) {
-var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid #ddd;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n\n";
+var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid #ddd;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n/* \u52A0\u70B9 3D \u6548\u679C */\n#code{\n  transform: rotate(360deg);\n}\n/* \u4E0D\u73A9\u4E86\uFF0C\u6211\u5F00\u59CB\u6B63\u5F0F\u4ECB\u7ECD\u6211\u81EA\u5DF1\u5427\uFF01*/\n/* \u9996\u5148\u51C6\u5907\u4E00\u5F20\u767D\u7EB8 */\n";
+var result2 = "\n";
 var n = 0;
 var id = setInterval(function () {
   n += 1;
   code.innerHTML = result.substring(0, n);
-  code.innerHTML = code.innerHTML.replace("html", '<span style="color: red;">html</span>');
   code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
   styleTag.innerHTML = result.substring(0, n);
 
   if (n >= result.length) {
     window.clearInterval(id);
+    fn2();
+    fn3(result);
   }
 }, 10);
+
+function fn2() {
+  var paper = document.createElement("div");
+  paper.id = "paper";
+  document.body.appendChild(paper);
+}
+
+function fn3(preResult) {
+  var result = "\n#paper{\n  width: 100px; height: 100px;\n  background: red;\n}\n  ";
+  var n = 0;
+  var id = setInterval(function () {
+    n += 1;
+    code.innerHTML = preResult + result.substring(0, n);
+    code.innerHTML = Prism.highlight(code.innerHTML, Prism.languages.css);
+    styleTag.innerHTML = result.substring(0, n);
+
+    if (n >= result.length) {
+      window.clearInterval(id);
+    }
+  }, 50);
+}
 },{}],"../../../AppData/Local/Yarn/Data/global/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -159,7 +182,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51614" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52170" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
