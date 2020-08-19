@@ -135,18 +135,36 @@ function writeCode(prefix, code, fn) {
   }, 10);
 }
 
-var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid red;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n/* \u52A0\u70B9 3D \u6548\u679C */\n#code{\n  transform: rotate(360deg);\n}\n/* \u4E0D\u73A9\u4E86\uFF0C\u6211\u5F00\u59CB\u6B63\u5F0F\u4ECB\u7ECD\u6211\u81EA\u5DF1\u5427\uFF01*/\n/* \u9996\u5148\u51C6\u5907\u4E00\u5F20\u767D\u7EB8 */\n#code{\n  position: fixed;\n  left: 0;\n  width: 50%;\n  height: 100%;\n}\n#paper{\n  position: fixed;\n  background: black;\n  right: 0;\n  width: 50%;\n  height: 100%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 16px;\n}\n#paper > .content{\n  background: white;\n  width: 100%;\n  height: 100%;\n}\n";
+function writeMarkdown(markdown, fn) {
+  var domPaper = document.querySelector("#paper> .content");
+  var n = 0;
+  var id = setInterval(function () {
+    n += 1;
+    domPaper.innerHTML = markdown.substring(0, n);
+    domPaper.scrollTop = domPaper.scrollHeight;
+
+    if (n >= markdown.length) {
+      window.clearInterval(id);
+      fn && fn.call();
+    }
+  }, 10);
+}
+
+var result = "/*\n * \u9762\u8BD5\u5B98\u4F60\u597D\uFF0C\u6211\u662F\u5B54\u4E49\n * \u6211\u5C06\u4EE5\u52A8\u753B\u7684\u5F62\u5F0F\u6765\u4ECB\u7ECD\u6211\u81EA\u5DF1\n * \u53EA\u7528\u6587\u5B57\u4ECB\u7ECD\u592A\u5355\u8C03\u4E86\n * \u6211\u5C31\u7528\u4EE3\u7801\u6765\u4ECB\u7ECD\u5427\n * \u9996\u5148\u51C6\u5907\u4E00\u4E9B\u6837\u5F0F\n */\n\n*{\n  margin: 0;\n  padding: 0;\n  transition: all 1s;\n}\nhtml{\n  background: rgb(222,222,222)\n  font-size: 16px;\n}\n#code{\n  border: 1px solid red;\n  padding: 16px;\n}\n\n/* \u6211\u9700\u8981\u4E00\u70B9\u4EE3\u7801\u9AD8\u4EAE */\n\n.token.selector {\n  color: #690;\n}\n.token.property {\n  color: #905;\n}\n.token.function {\n  color: dd4A68;\n}\n/* \u52A0\u70B9 3D \u6548\u679C */\n#code{\n  transform: rotate(360deg);\n}\n/* \u4E0D\u73A9\u4E86\uFF0C\u6211\u5F00\u59CB\u6B63\u5F0F\u4ECB\u7ECD\u6211\u81EA\u5DF1\u5427\uFF01*/\n/* \u9996\u5148\u51C6\u5907\u4E00\u5F20\u767D\u7EB8 */\n#code{\n  position: fixed;\n  left: 0;\n  width: 50%;\n  height: 100%;\n}\n#paper{\n  position: fixed;\n  background: black;\n  right: 0;\n  width: 50%;\n  height: 100%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 16px;\n}\n#paper > .content{\n  background: white;\n  width: 100%;\n  height: 100%;\n}\n#paper pre{\n  padding: 16px;\n}\n/\n* \u6211\u7684\u81EA\u6211\u4ECB\u7ECD\u5B8C\u6BD5 \n* \u8C22\u8C22\u89C2\u770B\n*/\n";
 var result2 = "\n#paper{\n\n}\n";
+var md = "\n# \u81EA\u6211\u4ECB\u7ECD\n\n\u6211\u53EB xxx\n1997 \u5E74 7 \u6708\u51FA\u751F\n\u8D35\u5DDE\u5927\u5B66\u6BD5\u4E1A\n\u81EA\u5B66\u524D\u7AEF\u534A\u5E74\n\u5E0C\u671B\u5E94\u8058\u524D\u7AEF\u5F00\u53D1\u5C97\u4F4D\n\n# \u6280\u80FD\u4ECB\u7ECD\n\n\u719F\u6089 HTML CSS JavaScript jQuery Vue\n\n# \u9879\u76EE\u4ECB\u7ECD\n\n1. xxx \u8F6E\u64AD\n2. xxx \u7B80\u5386\n3. xxx \u753B\u677F\n\n# \u8054\u7CFB\u65B9\u5F0F\n\nQQ xxx@qq.com\n\u90AE\u7BB1 xxx@gmail.com\n\u624B\u673A xxx\n";
 writeCode("", result, function () {
   // writeCode call the function
   createPaper(function () {
-    writeCode(result, result2);
+    writeCode(result, result2, function () {
+      writeMarkdown(md);
+    });
   });
 });
 
 function createPaper(fn) {
   var paper = document.createElement("div");
-  var content = document.createElement("div");
+  var content = document.createElement("pre");
   paper.id = "paper";
   content.className = "content";
   document.body.appendChild(paper);
